@@ -6,6 +6,8 @@
   // Load posts
   $.getJSON("https://jsonplaceholder.typicode.com/posts", (posts) => {
     posts.forEach((post) => {
+      post.body = post.body.replace(/\n/gi, '<br/>');
+
       $(body).append(`<article>
           <h2 data-posts="title">${post.title}</h2>
           <p data-posts="body">
