@@ -18,24 +18,12 @@
   
           <section class="comments" id="comments-${post.id}" hidden>
               <h3>Comments</h3>
-              TODO: Generate these dynamically.
-              <!--<p data-comments="body">
-                  laudantium enim quasi est quidem magnam voluptate ipsam eos<br>
-                  tempora quo necessitatibus<br>
-                  dolor quam autem quasi<br>
-                  reiciendis et nam sapiente accusantium
-              </p>
-              <address data-comments="name">
-                  <a data-comments="email" href="mailto:Eliseo@gardner.biz">id labore ex et quam laborum</a>
-              </address>-->
           </section>
       </article>`);
     });
 
     const BUTTON_SELECTOR = '[data-posts="id"]';
-
     let buttons = document.querySelectorAll(BUTTON_SELECTOR);
-  
     buttons.forEach(function (button) {
       'use strict';
   
@@ -46,6 +34,18 @@
         if (commentSection.hidden) {
           commentSection.hidden = false;
           button.textContent = 'Hide comments';
+
+          $(commentSection).html('<h3>Comments</h3>'); // Clean out innerHtml before generating new HTML
+          $.getJSON(`https://jsonplaceholder.typicode.com/posts/${button.value}/comments`, (comments) => {
+            console.log(comments);
+            comments.forEach((comment) => {
+              comment.body = comment.body.replace(/\n/gi, '<br/>');
+              $(commentSection).append(`<p data-comments="body">${comment.body}</p>
+              <address data-comments="name">
+                  <a data-comments="email" href="mailto:${comment.email}">${comment.name}</a>
+              </address>`);
+            });
+          });
         } else {
           commentSection.hidden = true;
           button.textContent = 'Show comments';
