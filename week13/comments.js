@@ -4,7 +4,7 @@
   const body = document.querySelector('body');
 
   // Load posts
-  $.getJSON("https://jsonplaceholder.typicode.com/posts", (posts) => {
+  $.getJSON('https://jsonplaceholder.typicode.com/posts', (posts) => {
     posts.forEach((post) => {
       post.body = post.body.replace(/\n/gi, '<br/>');
 
@@ -26,16 +26,16 @@
     let buttons = document.querySelectorAll(BUTTON_SELECTOR);
     buttons.forEach(function (button) {
       'use strict';
-  
+
       let sectionSelector = `#comments-${button.value}`;
       let commentSection = document.querySelector(sectionSelector);
-  
+
       button.addEventListener('click', function (event) {
         if (commentSection.hidden) {
           commentSection.hidden = false;
           button.textContent = 'Hide comments';
 
-          if (commentSection.getAttribute('loaded') == undefined) {
+          if (commentSection.getAttribute('loaded') === null) {
             commentSection.setAttribute('loaded', '');
             $(commentSection).html('<h3>Comments</h3>'); // Clean out innerHtml before generating new HTML
             $.getJSON(`https://jsonplaceholder.typicode.com/posts/${button.value}/comments`, (comments) => {
@@ -52,7 +52,7 @@
           commentSection.hidden = true;
           button.textContent = 'Show comments';
         }
-  
+
         event.preventDefault();
       });
     });
