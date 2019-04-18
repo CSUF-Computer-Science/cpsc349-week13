@@ -35,17 +35,19 @@
           commentSection.hidden = false;
           button.textContent = 'Hide comments';
 
-          $(commentSection).html('<h3>Comments</h3>'); // Clean out innerHtml before generating new HTML
-          $.getJSON(`https://jsonplaceholder.typicode.com/posts/${button.value}/comments`, (comments) => {
-            console.log(comments);
-            comments.forEach((comment) => {
-              comment.body = comment.body.replace(/\n/gi, '<br/>');
-              $(commentSection).append(`<p data-comments="body">${comment.body}</p>
-              <address data-comments="name">
-                  <a data-comments="email" href="mailto:${comment.email}">${comment.name}</a>
-              </address>`);
+          if (commentSection.getAttribute('loaded') == undefined) {
+            commentSection.setAttribute('loaded', '');
+            $(commentSection).html('<h3>Comments</h3>'); // Clean out innerHtml before generating new HTML
+            $.getJSON(`https://jsonplaceholder.typicode.com/posts/${button.value}/comments`, (comments) => {
+              comments.forEach((comment) => {
+                comment.body = comment.body.replace(/\n/gi, '<br/>');
+                $(commentSection).append(`<p data-comments="body">${comment.body}</p>
+                <address data-comments="name">
+                    <a data-comments="email" href="mailto:${comment.email}">${comment.name}</a>
+                </address>`);
+              });
             });
-          });
+          }
         } else {
           commentSection.hidden = true;
           button.textContent = 'Show comments';
